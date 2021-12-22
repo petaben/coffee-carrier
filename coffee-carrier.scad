@@ -1,39 +1,53 @@
 $fn=50;
+holderOffset = 48;
+hingeOffset = 7;
 
-translate([0,0,-7]){
+translate([0,-hingeOffset,0]){
     hinge();
 }
-translate([0,0,7]){
+
+translate([0,hingeOffset,0]){
     hinge();
 }
 
-translate([48,0,0]){
+translate([holderOffset,0,0]){
     rotate([0,180,0]){
         holder();
     }
 }
 
-translate([-48,0,0]){
-    holder();
+translate([-holderOffset,0,0]){
+    rotate([180,0,0]){
+        holder();
+    }
 }
 
 module holder(){
-    rotate([90,0,0]){
-        linear_extrude(4){
-            difference(){
-                hull(){
-                    circle(34);
-                    translate([38,0,0]){
-                        square([10,30.6], center=true);
-                    }
+    thickness = 4;
+    width = 30.6;
+    outerDiameter = 68;
+    innerDiameter = 60;
+
+    linear_extrude(thickness){
+        difference(){
+            hull(){
+                circle(d=outerDiameter);
+                translate([38,0,0]){
+                    square([10,width], center=true);
                 }
-                circle(30);
             }
+            circle(d=innerDiameter);
         }
     }
 }
 
 module hinge(){
+    rotate([90,0,0]){
+        verticalHinge();
+    }
+}
+
+module verticalHinge(){
     pinRadius = 1.5;
     clearance = 0.3;
     knuckleOuterRadius = 3;
